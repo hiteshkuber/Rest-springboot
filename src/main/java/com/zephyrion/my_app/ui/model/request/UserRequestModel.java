@@ -1,9 +1,6 @@
-package com.zephyrion.my_app.ui.model;
+package com.zephyrion.my_app.ui.model.request;
 
-public class UserRest {
-    String name;
-    int userId;
-
+public class UserRequestModel {
     public String getName() {
         return name;
     }
@@ -12,6 +9,8 @@ public class UserRest {
         this.name = name;
     }
 
+    private String name;
+
     public int getUserId() {
         return userId;
     }
@@ -19,4 +18,6 @@ public class UserRest {
     public void setUserId(int userId) {
         this.userId = userId;
     }
+
+    private int userId;
 }

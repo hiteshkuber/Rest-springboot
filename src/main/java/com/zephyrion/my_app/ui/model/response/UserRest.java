@@ -4,6 +4,16 @@ public class UserRest {
     String name;
     int userId;
 
+    public String getUUID() {
+        return UUID;
+    }
+
+    public void setUUID(String UUID) {
+        this.UUID = UUID;
+    }
+
+    String UUID;
+
     public String getName() {
         return name;
     }

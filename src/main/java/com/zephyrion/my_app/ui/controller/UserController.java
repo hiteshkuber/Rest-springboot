@@ -7,17 +7,24 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 @RestController // Receive http request and match the url path
 @RequestMapping("users") // Controller responsible for given path. http://localhost::8080/users
 public class UserController {
 
-    @GetMapping(path = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE) // Binds below method with http get request // Path param
-    public ResponseEntity getUser(@PathVariable String userId) {
-        UserRest userRest = new UserRest();
-        userRest.setUserId(123);
-        userRest.setName(userId);
+    Map<String, UserRest> users;
 
-        return new ResponseEntity<UserRest>(userRest, HttpStatus.OK);
+    @GetMapping(path = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE) // Binds below method with http get request // Path param
+    public ResponseEntity<UserRest> getUser(@PathVariable String userId) {
+
+        if (users.containsKey(userId)) {
+            return new ResponseEntity<>(users.get(userId), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping // Binds below method with http get request // Query param
@@ -32,7 +39,15 @@ public class UserController {
         userRest.setUserId(userRequestModel.getUserId());
         userRest.setName(userRequestModel.getName());
 
-        return new ResponseEntity<>(userRest, HttpStatus.CREATED);    }
+        String userID = UUID.randomUUID().toString();
+        if(users == null) {
+            users = new HashMap<>();
+        }
+        userRest.setUUID(userID);
+        users.put(userID, userRest);
+
+        return new ResponseEntity<>(userRest, HttpStatus.CREATED);
+    }
 
     @PutMapping
     public String updateUser() {
